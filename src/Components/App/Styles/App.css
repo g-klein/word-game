@@ -3,4 +3,8 @@
 
 body {
   margin: 0px;
-  padding: 0px; }
+  padding: 0px;
+  font-family: "Bangers", cursive;
+  color: white;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black; }
