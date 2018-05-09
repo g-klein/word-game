@@ -1,21 +1,30 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import './Styles/HomePage.css';
+import * as firebase from "firebase";
 
-export class HomePage extends Component {
+export class HomePage extends PureComponent {
   constructor(){
     super();
     this.hostButtonClick = this.hostButtonClick.bind(this);
-    this.state = {hidden: false};
+    this.state = {loading: false};
   }
 
-  hostButtonClick() {
-    this.setState({hidden: true});
-  }
+  hostButtonClick(){
+    //TODO: move all this code to props / actions
+    this.setState({loading: true});
 
+    var newGameRef = firebase.database().ref().child('games').push();
+    newGameRef.set({"Dirty dan": "daneroo"}).then(() => {
+      console.log("Success!");
+      this.setState({loading: false});
+    });
+
+    console.log(newGameRef);
+  }
 
   render() {
     return (
-      <div id="homepage" className={(this.state.hidden ? "loading" : "")}>
+      <div id="homepage" className={this.state.loading ? "loading" : ""}>
         <div className="homepage-centered">
           <div className="wrapper">
             <h1>Welcome to the word game!</h1>
