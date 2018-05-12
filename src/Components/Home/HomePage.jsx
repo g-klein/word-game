@@ -8,7 +8,7 @@ export class HomePage extends PureComponent {
   }
 
   hostButtonClick(){
-    this.props.HostGame();
+    this.props.hostGame(this.props.history);
   }
 
   render() {

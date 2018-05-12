@@ -1,10 +1,11 @@
 #homepage {
-  background-color: lightseagreen;
+  background-color: #afceff;
   width: 100%;
   height: 100vh; }
   #homepage .wrapper {
     display: block;
-    height: 80px; }
+    min-height: 80px;
+    text-align: center; }
   #homepage .homepage-centered {
     position: absolute;
     left: 50%;
@@ -24,7 +25,7 @@
     height: 80px;
     line-height: 80px;
     border-radius: 10px;
-    background-color: #14716c;
+    background-color: #639fff;
     cursor: pointer;
     margin: 0px auto;
     display: block;
@@ -33,9 +34,9 @@
     transition: all 0.2s linear; }
     #homepage #host-button:hover {
       transform: scale(1.1);
-      background-color: #188781;
+      background-color: #7cafff;
       transition: all 0.2s linear; }
     #homepage #host-button:active {
-      background-color: #1c9c95; }
+      background-color: #96beff; }
   #homepage h1 {
     font-size: 3rem; }

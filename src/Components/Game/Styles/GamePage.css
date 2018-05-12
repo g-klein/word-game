@@ -1,0 +1,74 @@
+#gamepage {
+  background-color: #afceff;
+  width: 100%;
+  min-height: 100vh;
+  animation: animate-background-color;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+  -webkit-text-stroke-width: 2px;
+  font-size: 3rem;
+  padding-top: 60px; }
+  #gamepage .row {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto; }
+  #gamepage .game-panel {
+    background-color: rgba(15, 15, 15, 0.5);
+    border-radius: 15px;
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+    border: 1px solid black;
+    animation: fade-in;
+    animation-duration: 1s;
+    animation-fill-mode: forwards; }
+  #gamepage .player-info h3 {
+    text-decoration: underline;
+    font-size: 4rem;
+    margin: 0px; }
+  #gamepage .player-info li.me {
+    color: #00e203; }
+  #gamepage .player-info button {
+    padding: 5px 10px;
+    border-radius: 10px;
+    border: none; }
+  #gamepage .game-header {
+    font-size: 4rem; }
+    #gamepage .game-header .join-link {
+      font-size: 2rem;
+      -webkit-text-stroke-width: 1px;
+      background-color: rgba(25, 25, 25, 0.8);
+      padding: 16px 6px;
+      border-radius: 15px;
+      max-width: 725px;
+      margin: auto;
+      -webkit-text-stroke-width: 0px;
+      letter-spacing: 0.2rem; }
+      #gamepage .game-header .join-link a {
+        color: #ddd; }
+        #gamepage .game-header .join-link a i {
+          margin-left: 6px; }
+        #gamepage .game-header .join-link a:hover {
+          text-decoration: none;
+          color: #7cff7e; }
+  #gamepage ul {
+    list-style-type: none;
+    padding-left: 0;
+    padding-top: 15px; }
+
+@keyframes animate-background-color {
+  0% {
+    background-color: #afceff; }
+  100% {
+    background-color: #afffb0; } }
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.5); }
+  25% {
+    opacity: 0;
+    transform: scale(0.5); }
+  100% {
+    opacity: 1;
+    transform: scale(1); } }

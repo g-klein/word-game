@@ -9,7 +9,13 @@ export function gameReducer(state, action) {
       case ACTION_TYPES.GAME_JOINED:
       {
         let games = Object.assign({}, state.games);
-        games[action.game.key] = action.game;
+        games[action.gameKey] = Object.assign({}, action.game, {myPlayerId: action.myPlayerId});
+        return Object.assign({}, state, {games});
+      }
+      case ACTION_TYPES.GAME_UPDATED:
+      {
+        let games = Object.assign({}, state.games);
+        games[action.gameKey] = Object.assign({}, games[action.gameKey], action.game);
         return Object.assign({}, state, {games});
       }
       default:
