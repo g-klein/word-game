@@ -33,7 +33,9 @@ export class PlayerInfo extends PureComponent {
                     </Col>
                     {this.props.isHost &&
                     <Col xs={12}>
-                        <button className="start-button">Start game</button>
+                        <button className="start-button" onClick={() => {this.props.startGame(this.props.gameId)}}>
+                            Start game
+                        </button>
                     </Col>
                     }
                 </Row>

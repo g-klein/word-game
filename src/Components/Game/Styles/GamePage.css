@@ -22,10 +22,10 @@
     animation: fade-in;
     animation-duration: 1s;
     animation-fill-mode: forwards; }
-  #gamepage .player-info h3 {
-    text-decoration: underline;
-    font-size: 4rem;
-    margin: 0px; }
+    #gamepage .game-panel h3 {
+      text-decoration: underline;
+      font-size: 4rem;
+      margin: 0px; }
   #gamepage .player-info li.me {
     color: #00e203; }
   #gamepage .player-info button {
@@ -51,10 +51,19 @@
         #gamepage .game-header .join-link a:hover {
           text-decoration: none;
           color: #7cff7e; }
+  #gamepage .game-letters {
+    font-size: 3.5rem;
+    color: #256525;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    letter-spacing: 0rem; }
   #gamepage ul {
     list-style-type: none;
     padding-left: 0;
     padding-top: 15px; }
+  #gamepage .game-hidden {
+    opacity: 0;
+    transition: all 1s linear; }
 
 @keyframes animate-background-color {
   0% {

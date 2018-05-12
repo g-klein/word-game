@@ -20,7 +20,7 @@ export class GameHeader extends PureComponent {
         return (
             <div className="game-panel game-header">
                 <p>Welcome to the word game!</p>
-                <p className="join-link">Join link: <a id="share-link-tag" href="" onClick={this.onShareClick}>{window.location.href} <i className="fa fa-clipboard" /></a></p>
+                <p className="join-link">Join link: <a id="share-link-tag" href="" title="Click to copy URL" onClick={this.onShareClick}>{window.location.href} <i className="fa fa-clipboard" /></a></p>
             </div>
         )
     }

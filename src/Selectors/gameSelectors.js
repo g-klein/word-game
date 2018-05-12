@@ -20,13 +20,11 @@ export function getMyPlayerId(state, props) {
 export function getHostId(state, props) {
     const players = getPlayers(state, props);
     const playerKeys = players && Object.keys(players);
-    const host = playerKeys && playerKeys.map((key) => {
-        if(players[key].host){
-            return key;
-        }
+    const hostId = playerKeys && playerKeys.find((key) => {
+        return players[key].host;
     });
 
-    return host && host[0];
+    return hostId;
 }
 
 export function isHost(state, props) {
@@ -34,4 +32,19 @@ export function isHost(state, props) {
     const hostId = getHostId(state, props);
 
     return myPlayerId === hostId;
+}
+
+export function getGameEndTime(state, props){
+    const game = getGame(state, props);
+    return game && game.endTime;
+}
+
+export function getGameState(state, props) {
+    const game = getGame(state, props);
+    return game && game.state;
+}
+
+export function getGameLetters(state, props) {
+    const game = getGame(state, props);
+    return game && game.letters;
 }

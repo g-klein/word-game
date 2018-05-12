@@ -28,18 +28,18 @@
 
         border: 1px solid black;
 
+        h3 {
+            text-decoration: underline;
+            font-size: 4rem;
+            margin: 0px;
+        }
+        
         animation: fade-in;
         animation-duration: 1s;
         animation-fill-mode: forwards;
     }
 
     .player-info {
-        h3 {
-            text-decoration: underline;
-            font-size: 4rem;
-            margin: 0px;
-        }
-
         li.me {
             color: darken($light-green, 40%);
         }
@@ -80,10 +80,23 @@
         }
     }
 
+    .game-letters {
+        font-size: 3.5rem;
+        color: #256525;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        letter-spacing: 0rem;
+    }
+
     ul {
         list-style-type: none;
         padding-left: 0;
         padding-top: 15px;
+    }
+
+    .game-hidden {
+        opacity: 0;
+        transition: all 1s linear;
     }
 }
 

@@ -1,6 +1,5 @@
 import {ACTION_TYPES} from '../Actions/ActionTypes';
 export function gameReducer(state, action) {
-    state = state || {greg: "greg"};
     switch(action.type) {
       case ACTION_TYPES.GAME_HOST_REQUESTED:
         return Object.assign({}, state, {hostLoading: true});
