@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Row, Col } from "react-bootstrap";
+import { GAME_STATES } from '../../Constants/GameStates';
 
 export class PlayerInfo extends PureComponent {
     constructor(){
@@ -24,6 +25,8 @@ export class PlayerInfo extends PureComponent {
     }
 
     render() {
+        const showHostButton = this.props.isHost && (this.props.gameState === GAME_STATES.PREGAME);
+        
         return (            
             <div className="game-panel player-info">
                 <h3>Players</h3>
@@ -31,7 +34,7 @@ export class PlayerInfo extends PureComponent {
                     <Col xs={12}>
                         {this.getPlayersBlock()}
                     </Col>
-                    {this.props.isHost &&
+                    {showHostButton &&
                     <Col xs={12}>
                         <button className="start-button" onClick={() => {this.props.startGame(this.props.gameId)}}>
                             Start game

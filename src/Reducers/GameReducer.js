@@ -17,6 +17,32 @@ export function gameReducer(state, action) {
         games[action.gameKey] = Object.assign({}, games[action.gameKey], action.game);
         return Object.assign({}, state, {games});
       }
+      case ACTION_TYPES.GAME_INPUT_CHANGED: 
+      {
+        let games = Object.assign({}, state.games);
+        let word = {
+            value: action.word,
+            valid: action.valid
+        }
+
+        games[action.gameKey] = Object.assign({}, games[action.gameKey], {word});
+        
+        return Object.assign({}, state, {games});
+      }
+      case ACTION_TYPES.WORD_SUBMITTING: {
+        let games = Object.assign({}, state.games);
+        let word = Object.assign({}, games[action.gameKey].word, {submitting: true});
+        games[action.gameKey] = Object.assign({}, games[action.gameKey], {word});
+
+        return Object.assign({}, state, games);
+      }
+      case ACTION_TYPES.WORD_SUBMITTED: {
+        let games = Object.assign({}, state.games);
+        let word = Object.assign({}, games[action.gameKey].word, { value: "", valid: false, submitting: false });
+        games[action.gameKey] = Object.assign({}, games[action.gameKey], {word});
+
+        return Object.assign({}, state, games);
+      }
       default:
         return state || {};
     }

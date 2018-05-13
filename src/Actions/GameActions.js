@@ -18,7 +18,7 @@ export const hostGame = (history) => {
                 .then(() => {
                     var playerRef = newGameRef.child('players').push({}, () => {
                         const myName = getRandomName();
-                        playerRef.set({host: true, name: myName});
+                        playerRef.set({host: true, name: myName, score: 0});
 
                         newGameRef.once('value').then((game) => {
                             dispatch({
@@ -40,14 +40,14 @@ export const hostGame = (history) => {
     }
 }
 
-export const joinGame = (gameId) => {
+export const joinGame = (gameKey) => {
     return dispatch => {
-        firebase.database().ref().child(`games/${gameId}`).once('value').then((gameSnap) => {
+        firebase.database().ref().child(`games/${gameKey}`).once('value').then((gameSnap) => {
             var gameRef = gameSnap.ref;
             
             var playerRef = gameRef.child('players').push({}, () => {
                 const myName = getRandomName();
-                playerRef.set({host: false, name: myName});
+                playerRef.set({host: false, name: myName, score: 0});
             });
 
             gameRef.once('value').then((game) => {
@@ -72,17 +72,92 @@ export const updateGame = (game, gameKey) => {
     }
 }
 
-export const startGame = (gameId) => {
+export const startGame = (gameKey) => {
     return dispatch => {
         const now = moment.utc().add(60, 'seconds').format('YYYY-MM-DD HH:mm:ss');
-        firebase.database().ref().child(`games/${gameId}/endTime`).set(now);
-        firebase.database().ref().child(`games/${gameId}/state`).set(GAME_STATES.STARTED);
+        firebase.database().ref().child(`games/${gameKey}/endTime`).set(now);
+        firebase.database().ref().child(`games/${gameKey}/state`).set(GAME_STATES.STARTED);
 
         const randomLetters = getRandomLetters();
-        firebase.database().ref().child(`games/${gameId}/letters`).set(randomLetters);
+        firebase.database().ref().child(`games/${gameKey}/letters`).set(randomLetters);
 
         dispatch({
             type: ACTION_TYPES.GAME_STARTED
         });
     }
+}
+
+export const onWordInputChange = (gameKey, word, letters) => {
+    return dispatch => {
+        var valid = wordIsValid(word, letters);
+        dispatch({
+            type: ACTION_TYPES.GAME_INPUT_CHANGED,
+            word,
+            valid,
+            gameKey
+        });
+    }
+}
+
+function wordIsValid(word, letters){
+    if(!word.length)
+    {
+        return false;
+    }
+
+    for(var i = 0; i < word.length; i++){
+        if(letters.some((l) => { return l === word[i] })){
+            //letter is valid.  Remove it from list of letters.
+            var idx = letters.indexOf(word[i]);
+            letters.splice(idx, 1);
+        } else {
+            //Letter is invalid
+            return false;
+        }
+    }
+
+    return true;
+}
+
+export const submitWord = (gameKey, word, playerId) => {
+    return dispatch => {
+        dispatch({type: ACTION_TYPES.WORD_SUBMITTING, gameKey});
+
+        firebase.database().ref().child(`games/${gameKey}/words`).once('value').then((wordSnap) => {
+            const duplicate = wordAlreadySubmitted(word, wordSnap.val());
+            if(!duplicate) {
+                //add to list
+                firebase.database().ref().child(`games/${gameKey}/words`).push(word);
+                incrementPlayerScore(playerId, gameKey, dispatch);
+            }   
+            else {
+                dispatch({type: ACTION_TYPES.WORD_SUBMITTED, gameKey});
+            }
+        });
+    }
+}
+
+const wordAlreadySubmitted = (word, wordList) => {
+    if(!wordList){
+        return false;
+    }
+
+    var keys = Object.keys((wordList));
+    for(var i = 0; i < keys.length; i++){
+        if(wordList[keys[i]] === word){
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+const incrementPlayerScore = (playerId, gameKey, dispatch) => {
+    firebase.database().ref().child(`games/${gameKey}/players/${playerId}`).once('value').then((playerSnap) => {
+        var updatedPlayer = playerSnap.val();
+        updatedPlayer.score++;
+        firebase.database().ref().child(`games/${gameKey}/players/${playerId}`).update(updatedPlayer, () => {
+            dispatch({ type: ACTION_TYPES.WORD_SUBMITTED, gameKey});
+        });
+    });
 }

@@ -21,6 +21,7 @@
 
     .game-panel {
         background-color: rgba(15,15,15,0.5);
+        box-shadow: 1px 1px 3px 1px #555;
         border-radius: 15px;
         margin: 10px;
         padding: 10px;
@@ -33,7 +34,26 @@
             font-size: 4rem;
             margin: 0px;
         }
-        
+
+        input,button {
+            padding: 10px;
+        }
+
+        input {
+            color: black;
+            -webkit-text-stroke-width: 0px;
+            font-family: Arial, Helvetica, sans-serif;
+
+            &.invalid {
+                color: rgb(250,50,50);
+            }
+        }
+
+        button:disabled {
+            background-color: #ccc;
+            color: #aaa;
+        }
+
         animation: fade-in;
         animation-duration: 1s;
         animation-fill-mode: forwards;
@@ -96,7 +116,7 @@
 
     .game-hidden {
         opacity: 0;
-        transition: all 1s linear;
+        transition: all 1s li0near;
     }
 }
 

@@ -6,12 +6,15 @@ import { GameHeader } from './GameHeader';
 import { CountdownTimer } from './CountdownTimer';
 import * as firebase from "firebase";
 import { GAME_STATES } from '../../Constants/GameStates';
+import { GameWordInput } from './GameWordInput';
 
 export class GamePage extends PureComponent {
   constructor(){
     super();
     this.attachGameListener = this.attachGameListener.bind(this);
     this.getAvailableLetters = this.getAvailableLetters.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.state = {gameListenerAttached: false};
   }
 
@@ -24,6 +27,15 @@ export class GamePage extends PureComponent {
       this.attachGameListener();
       this.setState({gameListenerAttached: true});
     }
+  }
+
+  handleChange(event) {
+      this.props.onWordInputChange(this.props.gameId, event.target.value, this.props.gameLetters.slice());
+  }
+
+  handleSubmit(event) {
+      event.preventDefault();
+      this.props.submitWord(this.props.gameId, this.props.gameWord.value, this.props.myPlayerId);
   }
 
   componentWillReceiveProps(nextProps){
@@ -44,9 +56,6 @@ export class GamePage extends PureComponent {
   }
 
   render() {
-    const timerClass = (this.props.gameState !== GAME_STATES.PREGAME) ? "" : "game-hidden";
-    console.log(timerClass);
-
     return (
       <div id="gamepage">
         <Row>
@@ -59,15 +68,18 @@ export class GamePage extends PureComponent {
                     myPlayerId={this.props.myPlayerId} 
                     isHost={this.props.isHost} 
                     startGame={this.props.startGame} 
-                    gameId={this.props.gameId} />
+                    gameId={this.props.gameId}
+                    gameState={this.props.gameState} />
           </Col>
           {this.props.gameState !== GAME_STATES.PREGAME &&
           <Col md={8} sm={12}>
             <CountdownTimer gameEndTime={this.props.gameEndTime} />
-            <div className="game-panel"></div>
             <div className="game-panel">
                 <h3>Available letters:</h3>
                 <p className="game-letters">{this.getAvailableLetters()}</p>
+            </div>
+            <div className="game-panel">
+                <GameWordInput gameWord={this.props.gameWord} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
             </div>
           </Col>
           }

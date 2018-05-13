@@ -48,3 +48,8 @@ export function getGameLetters(state, props) {
     const game = getGame(state, props);
     return game && game.letters;
 }
+
+export function getWord(state, props) {
+    const game = getGame(state, props);
+    return (game && game.word) || "";
+}
