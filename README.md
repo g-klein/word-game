@@ -11,7 +11,8 @@ This was coded to meet the provided specs using React / Redux for the front end,
 
 To run the code, clone the project, then:   
   
-```npm install .```
+```npm install .```    
+
 ```npm start```
 
 ## Game rules
