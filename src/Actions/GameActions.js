@@ -14,7 +14,7 @@ export const hostGame = (history) => {
         //create a new game.
         var newGameRef = 
             firebase.database().ref().child('games').push({}, () => {
-                newGameRef.set({"state": GAME_STATES.PREGAME})
+                newGameRef.set({state: GAME_STATES.PREGAME})
                 .then(() => {
                     var playerRef = newGameRef.child('players').push({}, () => {
                         const myName = getRandomName();
@@ -82,7 +82,8 @@ export const startGame = (gameKey) => {
         firebase.database().ref().child(`games/${gameKey}/letters`).set(randomLetters);
 
         dispatch({
-            type: ACTION_TYPES.GAME_STARTED
+            type: ACTION_TYPES.GAME_STARTED,
+            gameKey
         });
     }
 }
@@ -160,4 +161,14 @@ const incrementPlayerScore = (playerId, gameKey, dispatch) => {
             dispatch({ type: ACTION_TYPES.WORD_SUBMITTED, gameKey});
         });
     });
+}
+
+export const stopGame = (gameKey) => {
+    return dispatch => {
+        dispatch({type: ACTION_TYPES.GAME_ENDING, gameKey});
+
+        firebase.database().ref().child(`games/${gameKey}`).update({state: GAME_STATES.ENDED}, () => {
+            dispatch({type: ACTION_TYPES.GAME_ENDED, gameKey});
+        });
+    }    
 }

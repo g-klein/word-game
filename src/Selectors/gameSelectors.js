@@ -53,3 +53,20 @@ export function getWord(state, props) {
     const game = getGame(state, props);
     return (game && game.word) || "";
 }
+
+export function getEndTriggered(state, props) {
+    const game = getGame(state, props);
+    return game && game.endTriggered;
+}
+
+export function getWinner(state, props) {
+    const game = getGame(state, props);
+    const players = game && game.players;
+    const playerKeys = players && Object.keys(game && game.players);
+    const sortedPlayerKeys = playerKeys && playerKeys.sort((keyA, keyB) => {
+        return players[keyB].score - players[keyA].score;
+    });
+
+    const winner = sortedPlayerKeys && players[sortedPlayerKeys[0]];
+    return winner && Object.assign(winner, {id: sortedPlayerKeys[0]})
+}

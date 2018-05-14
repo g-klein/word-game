@@ -11,11 +11,12 @@ export class PlayerInfo extends PureComponent {
     getPlayersBlock() {
         const playerKeys = this.props.players && Object.keys(this.props.players);
         const players = this.props.players;
+        const showPoints = this.props.gameState !== GAME_STATES.PREGAME;
 
         var playersList = playerKeys && playerKeys.map((p) => {
             const player = players[p];
             const isMe = p === this.props.myPlayerId;
-            const copy = `${player.name} ${player.host ? " (host)" : ""}`;
+            const copy = `${player.name} ${player.host ? " (host)" : ""}${showPoints ? ` - ${player.score} pts` : ""}`;
             const itemClass = isMe ? "me" : "";
 
             return <li className={itemClass} key={p}>{copy}</li>;

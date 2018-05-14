@@ -23,6 +23,10 @@ export class CountdownTimer extends Component {
         let secondsRemaining = moment.utc(endTime).diff(moment.utc(), 'seconds');
         secondsRemaining = Math.max(secondsRemaining, 0);
         this.setState({ secondsRemaining});
+
+        if(secondsRemaining === 0){
+            this.props.stopGame();
+        }
     }
 
     render() {

@@ -2,7 +2,7 @@ import { GamePage } from './';
 import { connect } from 'react-redux';
 import * as actions from '../../Actions';
 import { withRouter } from 'react-router-dom';
-import { getGame, getPlayers, getMyPlayerId, isHost, getGameId, getGameEndTime, getGameState, getGameLetters, getWord } from '../../Selectors';
+import { getGame, getPlayers, getMyPlayerId, isHost, getGameId, getGameEndTime, getGameState, getGameLetters, getWord, getEndTriggered, getWinner } from '../../Selectors';
 
 export const GamePageContainer = withRouter(connect((state, props) => {
     return {
@@ -14,6 +14,8 @@ export const GamePageContainer = withRouter(connect((state, props) => {
         gameEndTime: getGameEndTime(state, props),
         gameState: getGameState(state, props),
         gameLetters: getGameLetters(state, props),
-        gameWord: getWord(state, props)
+        gameWord: getWord(state, props),
+        endTriggered: getEndTriggered(state, props),
+        winner: getWinner(state, props)
     }    
 }, actions)(GamePage));

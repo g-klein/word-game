@@ -1,6 +1,6 @@
 @import '../../SharedStyles/Variables.scss';
 
-#gamepage {
+#gamepage,#game-over-box {
     background-color: $eggshell-blue;
     width: 100%;
     min-height: 100vh;
@@ -13,6 +13,12 @@
     font-size: 3rem;
     padding-top: 60px;
 
+    &.game-over {
+        animation: animate-background-color-game-over;
+        animation-fill-mode: forwards;
+        animation-duration: 1s;
+    }
+
     .row {
         max-width: 1200px;
         margin-left: auto;
@@ -20,8 +26,8 @@
     }
 
     .game-panel {
-        background-color: rgba(15,15,15,0.5);
-        box-shadow: 1px 1px 3px 1px #555;
+        background-color: rgba(15, 15, 15, 0.5);
+        box-shadow: $box-shadow;
         border-radius: 15px;
         margin: 10px;
         padding: 10px;
@@ -54,7 +60,7 @@
             color: #aaa;
         }
 
-        animation: fade-in;
+        animation: fade-in; 
         animation-duration: 1s;
         animation-fill-mode: forwards;
     }
@@ -114,19 +120,71 @@
         padding-top: 15px;
     }
 
+    .word-list li {
+        display: inline-block;
+        margin-right: 20px;
+    }
+
     .game-hidden {
         opacity: 0;
         transition: all 1s li0near;
     }
 }
 
+#game-over-box {
+    background-color: transparent;
+    position: absolute;
+    left: 50%;
+    top: 25%;
+    transform: translate(-50%, -50%) scale(0.5);
+    transition: all 0.5s linear;
+
+    width: 300px;
+    height: 300px;
+    min-height: 0px;
+    font-size: 4rem;
+    text-align: center;
+    line-height: 8rem;
+
+    opacity: 0;
+
+    animation: fade-in-offset;
+    animation-duration: 1s;
+    animation-delay: 0.5s;
+    animation-fill-mode: forwards;
+
+    .game-panel {        
+        background-color: rgba(30,120,30,0.95);
+        width: 100%;
+        height: 100%;
+    }
+
+    a {
+        text-decoration: underline;
+        font-family: Arial, Helvetica, sans-serif;
+        color: rgb(35,35,150);
+    }
+}
+
 @keyframes animate-background-color {
     0% {
-        background-color: $eggshell-blue;;
+        background-color: $eggshell-blue;
     }
 
     100% {
         background-color: $light-green;
+    }
+}
+
+@keyframes animate-background-color-game-over {
+    0% {
+        background-color: $light-green;
+        filter: grayscale(0%);
+    }
+
+    100% {
+        background-color: #aaa;
+        filter: grayscale(90%);
     }
 }
 
@@ -144,5 +202,22 @@
     100% {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+@keyframes fade-in-offset {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    25% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
     }
 }

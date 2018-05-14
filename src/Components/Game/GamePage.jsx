@@ -7,6 +7,9 @@ import { CountdownTimer } from './CountdownTimer';
 import * as firebase from "firebase";
 import { GAME_STATES } from '../../Constants/GameStates';
 import { GameWordInput } from './GameWordInput';
+import { SubmittedWords } from './SubmittedWords';
+import { AvailableLetters } from './AvailableLetters';
+import { GameOverBox } from './GameOverBox';
 
 export class GamePage extends PureComponent {
   constructor(){
@@ -15,6 +18,7 @@ export class GamePage extends PureComponent {
     this.getAvailableLetters = this.getAvailableLetters.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.stopGame = this.stopGame.bind(this);
     this.state = {gameListenerAttached: false};
   }
 
@@ -38,6 +42,13 @@ export class GamePage extends PureComponent {
       this.props.submitWord(this.props.gameId, this.props.gameWord.value, this.props.myPlayerId);
   }
 
+  stopGame(){
+    if(this.props.isHost && !this.props.endTriggered && this.props.gameState === GAME_STATES.STARTED){
+      console.log("Stopping the game!");
+      this.props.stopGame(this.props.gameId);
+    }
+  }
+
   componentWillReceiveProps(nextProps){
     if(nextProps.game && !this.state.gameListenerAttached){
       this.attachGameListener();
@@ -57,33 +68,34 @@ export class GamePage extends PureComponent {
 
   render() {
     return (
-      <div id="gamepage">
-        <Row>
-          <Col xs={12}>
-            <GameHeader />
-          </Col>          
-          <Col md={4} sm={12}>
-                <PlayerInfo 
-                    players={this.props.players} 
-                    myPlayerId={this.props.myPlayerId} 
-                    isHost={this.props.isHost} 
-                    startGame={this.props.startGame} 
-                    gameId={this.props.gameId}
-                    gameState={this.props.gameState} />
-          </Col>
-          {this.props.gameState !== GAME_STATES.PREGAME &&
-          <Col md={8} sm={12}>
-            <CountdownTimer gameEndTime={this.props.gameEndTime} />
-            <div className="game-panel">
-                <h3>Available letters:</h3>
-                <p className="game-letters">{this.getAvailableLetters()}</p>
-            </div>
-            <div className="game-panel">
-                <GameWordInput gameWord={this.props.gameWord} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
-            </div>
-          </Col>
-          }
-        </Row>
+      <div>
+        <div id="gamepage" className={this.props.gameState === GAME_STATES.ENDED ? "game-over" : ""}>
+          <Row>
+            <Col xs={12}>
+              <GameHeader />
+            </Col>          
+            <Col md={5} sm={12}>
+                  <PlayerInfo 
+                      players={this.props.players} 
+                      myPlayerId={this.props.myPlayerId} 
+                      isHost={this.props.isHost} 
+                      startGame={this.props.startGame} 
+                      gameId={this.props.gameId}
+                      gameState={this.props.gameState} />
+            </Col>
+            {this.props.gameState !== GAME_STATES.PREGAME &&
+            <Col md={7} sm={12}>
+              <CountdownTimer gameEndTime={this.props.gameEndTime} stopGame={this.stopGame} />
+              <SubmittedWords gameWords={this.props.game && this.props.game.words} />
+              <AvailableLetters getAvailableLetters={this.getAvailableLetters} />
+              <GameWordInput gameWord={this.props.gameWord} gameState={this.props.gameState} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
+            </Col>
+            }
+          </Row>
+        </div>
+        {this.props.gameState === GAME_STATES.ENDED &&
+          <GameOverBox winner={this.props.winner} myPlayerId={this.props.myPlayerId} />
+        }
       </div>
     );
   }
