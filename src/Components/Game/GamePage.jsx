@@ -15,7 +15,6 @@ export class GamePage extends PureComponent {
   constructor(){
     super();
     this.attachGameListener = this.attachGameListener.bind(this);
-    this.getAvailableLetters = this.getAvailableLetters.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.stopGame = this.stopGame.bind(this);
@@ -56,10 +55,6 @@ export class GamePage extends PureComponent {
     }
   }
 
-  getAvailableLetters(){
-      return this.props.gameLetters && this.props.gameLetters.join(" ");
-  }
-
   attachGameListener(){
     firebase.database().ref().child(`games/${this.props.gameId}`).on('value', (gameSnap) => {
         this.props.updateGame(gameSnap.val(), gameSnap.key);
@@ -87,7 +82,7 @@ export class GamePage extends PureComponent {
             <Col md={7} sm={12}>
               <CountdownTimer gameEndTime={this.props.gameEndTime} stopGame={this.stopGame} />
               <SubmittedWords gameWords={this.props.game && this.props.game.words} />
-              <AvailableLetters getAvailableLetters={this.getAvailableLetters} />
+              <AvailableLetters gameLetters={this.props.gameLetters} />
               <GameWordInput gameWord={this.props.gameWord} gameState={this.props.gameState} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />
             </Col>
             }
